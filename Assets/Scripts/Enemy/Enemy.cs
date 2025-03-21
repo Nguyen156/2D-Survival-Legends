@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     private bool hasSpawned;
 
     [Header(" Attack Info ")]
+    [SerializeField] private int damage;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackDelay;
     private float attackTimer;
@@ -111,6 +112,8 @@ public class Enemy : MonoBehaviour
     private void Attack()
     {
         attackTimer = attackDelay;
+
+        player.TakeDamage(damage);
     }
 
     private void Die()
