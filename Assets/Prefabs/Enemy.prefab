@@ -95,7 +95,8 @@ GameObject:
   - component: {fileID: 2333836179354437216}
   - component: {fileID: 5732662794468567706}
   - component: {fileID: 8223632834953428252}
-  m_Layer: 0
+  - component: {fileID: 3241726040193686724}
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,6 +136,7 @@ MonoBehaviour:
   deathVFX: {fileID: 7964653469092757466}
   enemySr: {fileID: 126354828218433143}
   spawnIndicatorSr: {fileID: 3352717655600326773}
+  damage: 0
   attackRange: 2
   attackDelay: 1
   gizmos: 1
@@ -151,6 +153,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
+--- !u!58 &3241726040193686724
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6402048779306886215}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.85362154}
+  serializedVersion: 2
+  m_Radius: 0.29494017
 --- !u!1 &6553930188950910375
 GameObject:
   m_ObjectHideFlags: 0
