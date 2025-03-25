@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class Enemy : MonoBehaviour
 {
     [Header(" Components ")]
     private EnemyMovement movement;
+    private Collider2D cd;
 
     [Header(" Elements ")]
     private Player player;
@@ -19,11 +21,18 @@ public class Enemy : MonoBehaviour
     [SerializeField] private SpriteRenderer spawnIndicatorSr;
     private bool hasSpawned;
 
+    [Header(" Health ")]
+    [SerializeField] private int maxHealth;
+    private int health;
+
     [Header(" Attack Info ")]
     [SerializeField] private int damage;
     [SerializeField] private float attackRange;
     [SerializeField] private float attackDelay;
     private float attackTimer;
+
+    [Header(" Actions ")]
+    public static Action<int, Vector2> OnDamageTaken;
 
     [Header(" DEBUG ")]
     [SerializeField] private bool gizmos;
@@ -32,6 +41,8 @@ public class Enemy : MonoBehaviour
     {
         movement = GetComponent<EnemyMovement>();
         player = FindFirstObjectByType<Player>();
+
+        cd = GetComponent<Collider2D>();
     }
 
     // Start is called before the first frame update
@@ -39,6 +50,8 @@ public class Enemy : MonoBehaviour
     {
         if(player == null)
             Destroy(gameObject);
+       
+        health = maxHealth;
 
         StartCoroutine(SpawnCoroutine());
     }
@@ -58,7 +71,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator SpawnCoroutine()
     {
         SetRendererVisibility(false);
-        spawnIndicatorSr.transform.Rotate(0, 0, Random.Range(0, 90));
+        spawnIndicatorSr.transform.Rotate(0, 0, UnityEngine.Random.Range(0, 90));
 
         yield return new WaitForSeconds(0.2f);
 
@@ -87,6 +100,8 @@ public class Enemy : MonoBehaviour
 
         hasSpawned = true;
 
+        cd.enabled = true;
+
         movement.StorePlayer(player);
     }
 
@@ -114,6 +129,17 @@ public class Enemy : MonoBehaviour
         attackTimer = attackDelay;
 
         player.TakeDamage(damage);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int realDamage = Mathf.Min(health, damage);
+        health -= realDamage;
+
+        OnDamageTaken?.Invoke(damage, transform.position);
+
+        if (health <= 0)
+            Die();
     }
 
     private void Die()
