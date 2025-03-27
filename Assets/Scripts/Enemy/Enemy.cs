@@ -7,11 +7,11 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [Header(" Components ")]
-    private EnemyMovement movement;
-    private Collider2D cd;
+    protected EnemyMovement movement;
+    protected Collider2D cd;
 
     [Header(" Elements ")]
-    private Player player;
+    protected Player player;
 
     [Header(" Effects ")]
     [SerializeField] private ParticleSystem deathVFX;
@@ -19,17 +19,14 @@ public class Enemy : MonoBehaviour
     [Header(" Spawn Sequence Info")]
     [SerializeField] private SpriteRenderer enemySr;
     [SerializeField] private SpriteRenderer spawnIndicatorSr;
-    private bool hasSpawned;
+    protected bool hasSpawned;
 
     [Header(" Health ")]
     [SerializeField] private int maxHealth;
     private int health;
 
     [Header(" Attack Info ")]
-    [SerializeField] private int damage;
-    [SerializeField] private float attackRange;
-    [SerializeField] private float attackDelay;
-    private float attackTimer;
+    [SerializeField] protected float attackRange;
 
     [Header(" Actions ")]
     public static Action<int, Vector2> OnDamageTaken;
@@ -37,16 +34,16 @@ public class Enemy : MonoBehaviour
     [Header(" DEBUG ")]
     [SerializeField] private bool gizmos;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         movement = GetComponent<EnemyMovement>();
-        player = FindFirstObjectByType<Player>();
-
         cd = GetComponent<Collider2D>();
+        
+        player = FindFirstObjectByType<Player>();
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         if(player == null)
             Destroy(gameObject);
@@ -57,15 +54,9 @@ public class Enemy : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        if (!hasSpawned)
-            return;
-
-        if (attackTimer <= 0)
-            TryAttack();
-        else
-            Wait();
+        
     }
 
     private IEnumerator SpawnCoroutine()
@@ -110,27 +101,6 @@ public class Enemy : MonoBehaviour
         enemySr.enabled = visibility;
         spawnIndicatorSr.enabled = !visibility;
     }
-
-    private void TryAttack()
-    {
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-
-        if (distanceToPlayer <= attackRange)
-            Attack();
-    }
-
-    private void Wait()
-    {
-        attackTimer -= Time.deltaTime;
-    }
-
-    private void Attack()
-    {
-        attackTimer = attackDelay;
-
-        player.TakeDamage(damage);
-    }
-
     public void TakeDamage(int damage)
     {
         int realDamage = Mathf.Min(health, damage);
