@@ -29,7 +29,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float attackRange;
 
     [Header(" Actions ")]
-    public static Action<int, Vector2> OnDamageTaken;
+    public static Action<int, Vector2, bool> OnDamageTaken;
+    public static Action<Vector2> OnDeath;
 
     [Header(" DEBUG ")]
     [SerializeField] private bool gizmos;
@@ -101,12 +102,12 @@ public class Enemy : MonoBehaviour
         enemySr.enabled = visibility;
         spawnIndicatorSr.enabled = !visibility;
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCriticalHit)
     {
         int realDamage = Mathf.Min(health, damage);
         health -= realDamage;
 
-        OnDamageTaken?.Invoke(damage, transform.position);
+        OnDamageTaken?.Invoke(damage, transform.position, isCriticalHit);
 
         if (health <= 0)
             Die();
@@ -114,6 +115,8 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        OnDeath?.Invoke(transform.position);
+
         deathVFX.transform.parent = null;
         deathVFX.Play();
 

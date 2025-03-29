@@ -21,9 +21,10 @@ public class EnemyBullet : MonoBehaviour
 
     private IEnumerator IEReleaseBullet()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
-        rangeEnemyAttack.ReleaseBullet(this);
+        if(gameObject.activeSelf)
+            rangeEnemyAttack.ReleaseBullet(this);
     }
 
     public void Configure(RangeEnemyAttack rangeEnemyAttack)
@@ -46,8 +47,6 @@ public class EnemyBullet : MonoBehaviour
     {
         if(collision.TryGetComponent(out Player player))
         {
-            StopCoroutine(IEReleaseBullet());
-
             player.TakeDamage(damage);
 
             rangeEnemyAttack.ReleaseBullet(this);

@@ -53,14 +53,14 @@ public class DamageTextManager : MonoBehaviour
         Destroy(damageText.gameObject);
     }
 
-    public void EnemyHitCallback(int damage, Vector2 enemyPos)
+    public void EnemyHitCallback(int damage, Vector2 enemyPos, bool isCriticalHit)
     {
         DamageText newDamageText = damageTextPool.Get();
 
         Vector3 spawnPos = enemyPos + Vector2.up * 1.5f;
         newDamageText.transform.position = spawnPos;
 
-        newDamageText.Animate(damage);
+        newDamageText.Animate(damage, isCriticalHit);
 
         StartCoroutine(IEReleaseObj(newDamageText));
     }

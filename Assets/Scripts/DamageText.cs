@@ -14,21 +14,11 @@ public class DamageText : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-
-    public void Animate(int damage)
+    public void Animate(int damage, bool isCriticalHit)
     {
         damageText.text = damage.ToString();
+        damageText.color = isCriticalHit ? Color.red : Color.white;
+
         anim.Play("Animate");
     }
 }
