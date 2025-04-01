@@ -1,0 +1,69 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerLevel : MonoBehaviour
+{
+    [Header(" Settings ")]
+    private int requiredXp;
+    private int currentXp;
+    private int level;
+
+    [Header(" UI ")]
+    [SerializeField] private Image xpBar;
+    [SerializeField] private TextMeshProUGUI levelText;
+
+    private void Awake()
+    {
+        Candy.OnCollected += CandyCollectedCallback;
+    }
+
+    private void OnDestroy()
+    {
+        Candy.OnCollected -= CandyCollectedCallback;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        UpdateRequiredXp();
+        UpdateUI();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    private void UpdateRequiredXp()
+    {
+        requiredXp = (level + 1) * 5;
+    }
+
+    private void UpdateUI()
+    {
+        xpBar.fillAmount = (float)currentXp / requiredXp;
+        levelText.text = "LV " + (level + 1);
+    }
+
+    private void CandyCollectedCallback(Candy candy) 
+    {
+        currentXp++;
+
+        if (currentXp >= requiredXp)
+            LevelUp();
+
+        UpdateUI();
+    }
+
+    private void LevelUp()
+    {
+        level++;
+        currentXp = 0;
+
+        UpdateRequiredXp();
+    }
+}

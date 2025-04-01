@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 [RequireComponent(typeof(EnemyMovement))]
 public class Enemy : MonoBehaviour
 {
@@ -63,7 +65,7 @@ public class Enemy : MonoBehaviour
     private IEnumerator SpawnCoroutine()
     {
         SetRendererVisibility(false);
-        spawnIndicatorSr.transform.Rotate(0, 0, UnityEngine.Random.Range(0, 90));
+        spawnIndicatorSr.transform.Rotate(0, 0, Random.Range(0, 90));
 
         yield return new WaitForSeconds(0.2f);
 

@@ -15,16 +15,15 @@ public class EnemyBullet : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        StartCoroutine(IEReleaseBullet());
     }
 
     private IEnumerator IEReleaseBullet()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         if(gameObject.activeSelf)
             rangeEnemyAttack.ReleaseBullet(this);
+        
     }
 
     public void Configure(RangeEnemyAttack rangeEnemyAttack)
@@ -36,6 +35,8 @@ public class EnemyBullet : MonoBehaviour
     {
         this.damage = damage;
         rb.velocity = direction * moveSpeed;
+
+        StartCoroutine(IEReleaseBullet());
     }
 
     public void Reload()

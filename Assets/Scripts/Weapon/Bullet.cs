@@ -51,8 +51,8 @@ public class Bullet : MonoBehaviour
         Invoke(nameof(Release), 1f);
 
         this.damage = damage;
-        rb.velocity = direction * bulletSpeed;
         this.isCriticalHit = isCriticalHit;
+        rb.velocity = direction * bulletSpeed;
     }
 
 
