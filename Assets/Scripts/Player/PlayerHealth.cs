@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player die");
+        GameManager.instance.SetGameState(GameState.GAMEOVER);
     }
 
     private void UpdateUI()
