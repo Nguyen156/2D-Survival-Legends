@@ -14,11 +14,13 @@ public class DamageTextManager : MonoBehaviour
     private void Awake()
     {
         Enemy.OnDamageTaken += EnemyHitCallback;
+        PlayerHealth.OnAttackDodged += AttackDodgedCallback;
     }
 
     private void OnDestroy()
     {
         Enemy.OnDamageTaken -= EnemyHitCallback;
+        PlayerHealth.OnAttackDodged -= AttackDodgedCallback;
     }
 
     // Start is called before the first frame update
@@ -60,7 +62,19 @@ public class DamageTextManager : MonoBehaviour
         Vector3 spawnPos = enemyPos + Vector2.up * 1.5f;
         newDamageText.transform.position = spawnPos;
 
-        newDamageText.Animate(damage, isCriticalHit);
+        newDamageText.Animate($"{damage}", isCriticalHit);
+
+        StartCoroutine(IEReleaseObj(newDamageText));
+    }
+    
+    public void AttackDodgedCallback(Vector2 playerPos)
+    {
+        DamageText newDamageText = damageTextPool.Get();
+
+        Vector3 spawnPos = playerPos + Vector2.up * 1.5f;
+        newDamageText.transform.position = spawnPos;
+
+        newDamageText.Animate("Dodged", false);
 
         StartCoroutine(IEReleaseObj(newDamageText));
     }

@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
     [Header(" Elements ")]
-    [SerializeField] private Button[] upgradeButtons;
+    [SerializeField] private UI_UpgradeButton[] upgradeButtons;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +39,94 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
         {
             int randomIndex = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
 
-            string randomStatString = Enums.FormatStatName((Stat)randomIndex);
+            string upgradeName = Enums.FormatStatName((Stat)randomIndex);
 
-            upgradeButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = randomStatString;
+            Action action = GetActionToPerform((Stat)randomIndex, out string upgradeValue);
 
-            upgradeButtons[i].onClick.RemoveAllListeners();
-            upgradeButtons[i].onClick.AddListener(() => Debug.Log(randomStatString));
+            upgradeButtons[i].Configure(null, upgradeName, upgradeValue);
+
+            upgradeButtons[i].Button.onClick.RemoveAllListeners();
+            upgradeButtons[i].Button.onClick.AddListener(() => action?.Invoke());
+            upgradeButtons[i].Button.onClick.AddListener(() => BonusSelectedCallback());
         }
+    }
+
+    private void BonusSelectedCallback()
+    {
+        GameManager.instance.WaveCompletedCallback();
+    }
+
+    private Action GetActionToPerform(Stat stat, out string upgradeValue)
+    {
+        upgradeValue = "";
+        float value = 0;
+
+        switch (stat)
+        {
+            case Stat.Attack:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + '%';
+                break;
+
+            case Stat.AttackSpeed:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + '%';
+                break;
+
+            case Stat.CriticalChance:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + '%';
+                break;
+
+            case Stat.CriticalPercent:
+                value = Random.Range(1, 6f);
+                upgradeValue = "+" + value.ToString("F2") + 'x';
+                break;
+
+            case Stat.MoveSpeed:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + '%';
+                break;
+
+            case Stat.MaxHealth:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value;
+                break;
+
+            case Stat.Range:
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value;
+                break;
+
+            case Stat.HealthRecoverySpeed:
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value;
+                break;
+
+            case Stat.Armor:
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value;
+                break;
+
+            case Stat.Luck:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + '%';
+                break;
+
+            case Stat.Dodge:
+                value = Random.Range(1, 11);
+                upgradeValue = "+" + value + "%";
+                break;
+
+            case Stat.LifeSteal:
+                value = Random.Range(1, 11);
+                upgradeValue = $"+{value}%";
+                break;
+
+            default:
+                return () => Debug.Log("Invalid stat");
+        }
+
+        return () => PlayerStatsManager.instance.AddPlayerStat(stat, value);
     }
 }

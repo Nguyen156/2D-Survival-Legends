@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour, IGameStateListener
+public class PlayerController : MonoBehaviour, IGameStateListener, IPlayerStatsDependency
 {
     [Header(" Components ")]
     private Rigidbody2D rb;
 
     [Header(" Settings ")]
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float baseMoveSpeed;
+    private float moveSpeed;
     private Vector2 moveDir;
     private bool canMove;
 
@@ -58,5 +59,13 @@ public class PlayerController : MonoBehaviour, IGameStateListener
                 rb.velocity = Vector2.zero;
                 break;
         }
+    }
+
+    public void UpdateStats(PlayerStatsManager playerStats)
+    {
+        float moveSpeedPercent = playerStats.GetStatValue(Stat.MoveSpeed) / 100;
+        moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
+        
+
     }
 }

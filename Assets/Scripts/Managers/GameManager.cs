@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
             element.GameStateChangedCallback(gameState);
     }
 
-    public void WaveCompleted()
+    public void WaveCompletedCallback()
     {
         if (Player.instance.HasLevelUp())
         {
@@ -48,9 +48,4 @@ public class GameManager : MonoBehaviour
             SetGameState(GameState.SHOP);
         }
     }
-}
-
-public interface IGameStateListener
-{
-    void GameStateChangedCallback(GameState gameState);
 }

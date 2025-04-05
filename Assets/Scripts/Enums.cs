@@ -19,7 +19,11 @@ public enum Stat
     MoveSpeed,
     MaxHealth,
     Range,
-    Luck
+    HealthRecoverySpeed,
+    Armor,
+    Luck,
+    Dodge,
+    LifeSteal,
 }
 
 public static class Enums

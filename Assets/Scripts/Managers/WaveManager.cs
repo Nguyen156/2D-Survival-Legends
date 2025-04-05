@@ -36,7 +36,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         if (timer < waveDuration)
         {
-            ui.UpdatTimerText(((int)(waveDuration - timer)).ToString());
+            ui.UpdatTimerText($"{waveDuration - (int)timer}");
 
             ManageWave();
         }
@@ -76,7 +76,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
         }
         else
-            GameManager.instance.WaveCompleted();
+            GameManager.instance.WaveCompletedCallback();
     }
     private void DefeatAllEnemies()
     {
@@ -117,7 +117,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private Vector2 GetSpawnPos()
     {
         Vector2 direction = Random.onUnitSphere;
-        Vector2 offset = direction.normalized * Random.Range(6, 10);
+        Vector2 offset = direction.normalized * Random.Range(10, 16);
 
         Vector2 targetPos = (Vector2)player.transform.position + offset;
 
