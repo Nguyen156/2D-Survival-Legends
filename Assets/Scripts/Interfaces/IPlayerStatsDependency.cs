@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IPlayerStatsDependency
 {
-    void UpdateStats(PlayerStatsManager playerStats);
+    void UpdateStats(PlayerStatsManager playerStatsManager);
 }

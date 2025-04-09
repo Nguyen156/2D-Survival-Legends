@@ -20,10 +20,10 @@ MonoBehaviour:
   criticalChance: 0
   criticalPercent: 0
   moveSpeed: 0
-  maxHealth: 0
+  maxHealth: 10
   range: 0
   healthRecoverySpeed: 0
   armor: 0
   luck: 0
-  dodge: 100
+  dodge: 0
   lifeSteal: 0

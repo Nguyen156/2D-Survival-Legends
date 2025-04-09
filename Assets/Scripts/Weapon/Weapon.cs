@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
 {
+    [field: SerializeField] public WeaponDataSO WeaponData {  get; private set; }
+
     [Header(" Components ")]
     protected Animator anim;
 
@@ -11,11 +13,16 @@ public class Weapon : MonoBehaviour
     [SerializeField] protected float attackRange;
     [SerializeField] protected LayerMask whatIsEnemy;
 
+    public int Level { get; private set; }
+
     [Header(" Attack ")]
     [SerializeField] protected int damage;
     [SerializeField] protected float attackDelay;
     protected float attackTimer;
-    
+
+    [Header(" Crit ")]
+    protected int criticalChance;
+    protected int criticalPercent;
 
     [Header(" Animations ")]
     [SerializeField] protected float aimLerp;
@@ -47,10 +54,10 @@ public class Weapon : MonoBehaviour
     {
         isCriticalHit = false;
 
-        if(Random.Range(0, 100) <= 50)
+        if(Random.Range(0, 100) < criticalChance)
         {
             isCriticalHit = true;
-            return damage * 2;
+            return damage * criticalPercent;
         }
 
         return damage;
@@ -88,4 +95,24 @@ public class Weapon : MonoBehaviour
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
+    public abstract void UpdateStats(PlayerStatsManager playerStats);
+
+    public void SetupStats()
+    {
+        Dictionary<Stat, float> calculatedStats = WeaponStatsCalculator.GetStats(WeaponData,Level);
+
+        damage          = Mathf.RoundToInt(calculatedStats[Stat.Attack]);
+        attackDelay     = 1f / (calculatedStats[Stat.AttackSpeed]);
+        criticalChance  = Mathf.RoundToInt(calculatedStats[Stat.CriticalChance]);
+        criticalPercent = Mathf.RoundToInt(calculatedStats[Stat.CriticalPercent]);
+        attackRange     = calculatedStats[Stat.Range];
+
+    }
+
+    public void UpgradeTo(int targetLevel)
+    {
+        Level = targetLevel;
+        SetupStats();
+    }
+
 }
