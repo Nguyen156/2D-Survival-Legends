@@ -13,9 +13,9 @@ public static class WeaponStatsCalculator
         foreach(KeyValuePair<Stat,float> kvp in weaponData.BaseStats)
         {
             if (weaponData.Prefab.GetType() != typeof(RangeWeapon) && kvp.Key == Stat.Range)
-                continue;
-
-            calculatedStats.Add(kvp.Key, kvp.Value * multiplier);
+                calculatedStats.Add(kvp.Key, kvp.Value);
+            else
+                calculatedStats.Add(kvp.Key, kvp.Value * multiplier);
         }
 
         return calculatedStats;

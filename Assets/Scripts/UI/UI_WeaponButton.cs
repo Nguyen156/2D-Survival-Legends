@@ -19,14 +19,16 @@ public class UI_WeaponButton : MonoBehaviour
 
     [Header(" Color ")]
     [SerializeField] private Image btnImage;
+    [SerializeField] private Image btnOutline;
 
     public void Setup(Sprite sprite, string name, int level, WeaponDataSO weaponData)
     {
         icon.sprite = sprite;
-        nameText.text = name;
+        nameText.text = name + $" (Lv {level + 1})"; 
 
         nameText.color = ColorHolder.GetColor(level);
         btnImage.color = ColorHolder.GetColor(level);
+        btnOutline.color = ColorHolder.GetOutlineColor(level);
 
         Dictionary<Stat, float> calculatedStats = WeaponStatsCalculator.GetStats(weaponData, level);
         SetupStatContainers(calculatedStats);

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SwordData
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Sword
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 3c537b73829ade54dbdf132b18bb866e, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 67980381eedc14140b29e65cd2a94871, type: 3}
   <Price>k__BackingField: 0
   <Prefab>k__BackingField: {fileID: 8965731886222835745, guid: dcc9c4254e3d3144180146e6eea34c2d, type: 3}
   attack: 5

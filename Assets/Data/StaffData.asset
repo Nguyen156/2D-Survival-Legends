@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StaffData
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Staff
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 5a54394753518724fab7ad24be127712, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 9ff32c82b14b2ee4a9159a679d167564, type: 3}
   <Price>k__BackingField: 0
   <Prefab>k__BackingField: {fileID: 1434210380140246511, guid: 7f7ee0bcbe30db74086e4dfad9cbc6d6, type: 3}
   attack: 10
