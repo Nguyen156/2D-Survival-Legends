@@ -28,7 +28,7 @@ MonoBehaviour:
   - stat: 6
     icon: {fileID: 21300000, guid: 648d655a55ad38a4fbe0b9030ef24b50, type: 3}
   - stat: 7
-    icon: {fileID: 21300000, guid: b1e5ede2821f37a4c9ffcf0202e5a078, type: 3}
+    icon: {fileID: -1260370165506841113, guid: 6926af5391dcaaf4b8f012405b6399d4, type: 3}
   - stat: 8
     icon: {fileID: -2757887451555568444, guid: 8fffe40f3ebda0d469b31ca1513a3248, type: 3}
   - stat: 9

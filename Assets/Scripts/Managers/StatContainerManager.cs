@@ -17,6 +17,7 @@ public class StatContainerManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
+
     public static void GenerateStatContainers(Dictionary<Stat, float> statDictionary, Transform parent)
     {
         instance.GenerateContainers(statDictionary, parent);
@@ -33,7 +34,7 @@ public class StatContainerManager : MonoBehaviour
 
             Sprite icon = ResourcesManager.GetStatIcon(kvp.Key);
             string statName = Enums.FormatStatName(kvp.Key);
-            string statValue = Mathf.Round(kvp.Value).ToString();
+            float statValue = Mathf.Round(kvp.Value);
 
             newStatContainer.Setup(icon, statName, statValue);
         }

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_WeaponButton : MonoBehaviour
+public class UI_WeaponSelectionButton : MonoBehaviour
 {
     [field: SerializeField] public Button Button {  get; private set; }
 
@@ -21,10 +21,10 @@ public class UI_WeaponButton : MonoBehaviour
     [SerializeField] private Image btnImage;
     [SerializeField] private Image btnOutline;
 
-    public void Setup(Sprite sprite, string name, int level, WeaponDataSO weaponData)
+    public void Setup(WeaponDataSO weaponData, int level)
     {
-        icon.sprite = sprite;
-        nameText.text = name + $" (Lv {level + 1})"; 
+        icon.sprite = weaponData.Sprite;
+        nameText.text = weaponData.Name + $" (Lv {level + 1})"; 
 
         nameText.color = ColorHolder.GetColor(level);
         btnImage.color = ColorHolder.GetColor(level);

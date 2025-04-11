@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 3717673321438872489}
   - component: {fileID: 6381530763460245879}
   - component: {fileID: 3097667283837817798}
-  - component: {fileID: 2534004340917784406}
+  - component: {fileID: 5919565194187506812}
   m_Layer: 0
   m_Name: Weapon Button
   m_TagString: Untagged
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2534004340917784406
+--- !u!114 &5919565194187506812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -239,7 +239,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2885354622404327682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7173fce8ff6581742a87b9056057eeef, type: 3}
+  m_Script: {fileID: 11500000, guid: 99a979673bc4e0c439d8021bfa01bef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Button>k__BackingField: {fileID: 3097667283837817798}

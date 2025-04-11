@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,41 +10,99 @@ using Random = UnityEngine.Random;
 
 public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveTransitionManager instance;
+
+    [Header(" Player ")]
+    [SerializeField] private PlayerObject playerObject;
+
     [Header(" Elements ")]
     [SerializeField] private UI_UpgradeButton[] upgradeButtons;
+    [SerializeField] private GameObject upgradeButtonParent;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header(" Chest Related ")]
+    [SerializeField] private UI_ChestObjectContainer chestContainerPrefab;
+    [SerializeField] private Transform chestContainerParent;
+
+    [Header(" Settings ")]
+    private int chestCollected;
+
+    private void Awake()
     {
-        
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
+        Chest.OnCollected += ChestCollectedCallback;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        
+        Chest.OnCollected -= ChestCollectedCallback;
     }
+
     public void GameStateChangedCallback(GameState gameState)
     {
         switch (gameState)
         {
             case GameState.WAVETRANSITION:
-                ConfigureUpgradeContainer();
+                TryOpenChest();
                 break;
         }
     }
 
+    private void TryOpenChest()
+    {
+        chestContainerParent.Clear();
+
+        if (chestCollected > 0)
+            ShowObject();
+        else
+            ConfigureUpgradeContainer();
+    }
+
+    private void ShowObject()
+    {
+        chestCollected--;
+
+        upgradeButtonParent.SetActive(false);
+
+        ObjectDataSO[] objectDatas = ResourcesManager.Objects;
+        ObjectDataSO randomObjData = objectDatas[Random.Range(0, objectDatas.Length)];
+        
+        UI_ChestObjectContainer newChestContainer = Instantiate(chestContainerPrefab, chestContainerParent);
+        newChestContainer.Setup(randomObjData);
+
+        newChestContainer.TakeButton.onClick.AddListener(() => TakeButtonCallback(randomObjData));
+        newChestContainer.RecycleButton.onClick.AddListener(() => RecycleButtonCallback(randomObjData));
+    }
+
+    private void TakeButtonCallback(ObjectDataSO objectToTake)
+    {
+        playerObject.AddObject(objectToTake);
+        TryOpenChest();
+    }
+
+    private void RecycleButtonCallback(ObjectDataSO objectToRecycle)
+    {
+        CurrencyManager.instance.AddCurrency(objectToRecycle.RecyclePrice);
+        TryOpenChest();
+    }
+
     private void ConfigureUpgradeContainer()
     {
+        upgradeButtonParent.SetActive(true);
+
         for (int i = 0; i < upgradeButtons.Length; i++)
         {
             int randomIndex = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
 
+            Sprite upgradeIcon = ResourcesManager.GetStatIcon((Stat)randomIndex);
             string upgradeName = Enums.FormatStatName((Stat)randomIndex);
 
             Action action = GetActionToPerform((Stat)randomIndex, out string upgradeValue);
 
-            upgradeButtons[i].Configure(null, upgradeName, upgradeValue);
+            upgradeButtons[i].Configure(upgradeIcon, upgradeName, upgradeValue);
 
             upgradeButtons[i].Button.onClick.RemoveAllListeners();
             upgradeButtons[i].Button.onClick.AddListener(() => action?.Invoke());
@@ -79,8 +138,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 break;
 
             case Stat.CriticalPercent:
-                value = Random.Range(1, 6f);
-                upgradeValue = "+" + value.ToString("F2") + 'x';
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value + 'x';
                 break;
 
             case Stat.MoveSpeed:
@@ -100,7 +159,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
             case Stat.HealthRecoverySpeed:
                 value = Random.Range(1, 6);
-                upgradeValue = "+" + value;
+                upgradeValue = "+" + value +"%";
                 break;
 
             case Stat.Armor:
@@ -127,6 +186,15 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 return () => Debug.Log("Invalid stat");
         }
 
+        //upgradeValue = Enums.FormatStatName(stat) + "\n" + upgradeValue;
+
         return () => PlayerStatsManager.instance.AddPlayerStat(stat, value);
     }
+
+    private void ChestCollectedCallback()
+    {
+        chestCollected++;
+    }
+
+    public bool HasCollectedChest() => chestCollected > 0;
 }

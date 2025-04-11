@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResourcesManager
 {
     const string STAT_ICONS_DATA_PATH = "Data/Stat Icons";
+    const string OBJECT_DATA_PATH = "Data/Objects/";
 
     private static StatIcon[] statIcons;
 
@@ -23,5 +24,19 @@ public class ResourcesManager
         }
 
         return null;
+    }
+
+    private static ObjectDataSO[] objectDatas;
+    public static ObjectDataSO[] Objects
+    {
+        get
+        {
+            if (objectDatas == null)
+                objectDatas = Resources.LoadAll<ObjectDataSO>(OBJECT_DATA_PATH);
+
+            return objectDatas;
+        }
+
+        private set { }
     }
 }
