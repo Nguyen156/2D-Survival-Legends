@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class CurrencyManager : MonoBehaviour
     public static CurrencyManager instance;
 
     [field: SerializeField] public int Currency {  get; private set; }
+
+    public static Action OnUpdated;
 
     private void Awake()
     {
@@ -21,11 +24,18 @@ public class CurrencyManager : MonoBehaviour
         UpdateUI();
     }
 
+    [NaughtyAttributes.Button]
+    private void Add500Currency() => AddCurrency(500);
+
     public void AddCurrency(int amount)
     {
         Currency += amount;
         UpdateUI();
+
+        OnUpdated?.Invoke();
     }
+
+    public void UseCurrency(int price) => AddCurrency(-price);
 
     private void UpdateUI()
     {
@@ -33,5 +43,10 @@ public class CurrencyManager : MonoBehaviour
 
         foreach (var child in currencyTexts)
             child.UpdateText(Currency);
+    }
+
+    public bool HasEnoughCurrency(int price)
+    {
+        return Currency >= price;
     }
 }

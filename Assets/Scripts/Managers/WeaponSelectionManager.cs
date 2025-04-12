@@ -26,7 +26,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
                 if (selectedWeapon == null)
                     return;
 
-                playerWeapon.AddWeapon(selectedWeapon, initialWeaponLevel);
+                playerWeapon.TryAddWeapon(selectedWeapon, initialWeaponLevel);
                 selectedWeapon = null;
                 initialWeaponLevel = 0;
                 break;

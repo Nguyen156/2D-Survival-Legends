@@ -20,4 +20,11 @@ public static class WeaponStatsCalculator
 
         return calculatedStats;
     }
+
+    public static int GetPurchasePrice(WeaponDataSO weaponData, int level)
+    {
+        float multiplier = 1 + (float)level / 3;
+
+        return (int)(weaponData.Price * multiplier);
+    }
 }
