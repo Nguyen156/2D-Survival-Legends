@@ -20,4 +20,28 @@ public class PlayerWeapon : MonoBehaviour
 
         return false;
     }
+
+    public void RemoveWeapon(int weaponIndex)
+    {
+        int recyclePrice = weaponPositions[weaponIndex].Weapon.GetRecyclePrice();
+        CurrencyManager.instance.AddCurrency(recyclePrice);
+
+        weaponPositions[weaponIndex].RemoveWeapon();
+    }
+
+    public Weapon[] GetWeapons()
+    {
+        List<Weapon> weaponList = new List<Weapon>();
+
+        foreach(var weaponPos in weaponPositions)
+        {
+            if (weaponPos.Weapon == null)
+                weaponList.Add(null);
+            else 
+                weaponList.Add(weaponPos.Weapon);
+
+        }
+
+        return weaponList.ToArray();
+    }
 }

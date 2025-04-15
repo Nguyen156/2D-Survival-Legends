@@ -24,4 +24,11 @@ public class PlayerObject : MonoBehaviour
         ObjectList.Add(objectData);
         PlayerStatsManager.instance.AddObject(objectData.BaseStats);
     }
+
+    public void RemoveObject(ObjectDataSO objectData)
+    {
+        ObjectList.Remove(objectData);
+        PlayerStatsManager.instance.RemoveObjectStats(objectData.BaseStats);
+    }
+
 }
