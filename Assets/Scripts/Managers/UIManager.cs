@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject stageCompletePanel;
     [SerializeField] private GameObject waveTransitionPanel;
     [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject restartConfirmationPanel;
+    [SerializeField] private GameObject characterSelectionPanel;
+    [SerializeField] private GameObject settingsPanel;
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -27,6 +32,21 @@ public class UIManager : MonoBehaviour, IGameStateListener
             waveTransitionPanel, 
             shopPanel
         });
+
+        GameManager.OnGamePaused += GamePausedCallback;
+        GameManager.OnGameResumed += GameResumedCallback;
+
+        pausePanel.SetActive(false);
+        HideRestartConfirmationPanel();
+        HideCharacterSelection();
+
+        HideSettings();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGamePaused -= GamePausedCallback;
+        GameManager.OnGameResumed -= GameResumedCallback;
     }
 
     public void GameStateChangedCallback(GameState gameState)
@@ -68,4 +88,22 @@ public class UIManager : MonoBehaviour, IGameStateListener
         foreach (var p in panels)
             p.SetActive(p == panelToShow);
     }
+    private void GamePausedCallback()
+    {
+        pausePanel.SetActive(true);
+    }
+
+    private void GameResumedCallback()
+    {
+        pausePanel.SetActive(false);
+    }
+
+    public void ShowRestartConfirmationPanel() => restartConfirmationPanel.SetActive(true);
+    public void HideRestartConfirmationPanel() => restartConfirmationPanel.SetActive(false);
+
+    public void ShowCharacterSelection() => characterSelectionPanel.SetActive(true);
+    public void HideCharacterSelection() => characterSelectionPanel.SetActive(false); 
+    
+    public void ShowSettings() => settingsPanel.SetActive(true);
+    public void HideSettings() => settingsPanel.SetActive(false);
 }

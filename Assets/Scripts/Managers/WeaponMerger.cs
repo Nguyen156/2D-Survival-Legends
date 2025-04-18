@@ -63,7 +63,7 @@ public class WeaponMerger : MonoBehaviour
         if(weaponsToMerge.Count < 2)
             return;
 
-        Destroy(weaponsToMerge[1].gameObject);
+        DestroyImmediate(weaponsToMerge[1].gameObject);
 
         weaponsToMerge[0].Upgrade();
 

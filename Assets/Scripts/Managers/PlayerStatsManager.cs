@@ -24,6 +24,8 @@ public class PlayerStatsManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        CharacterSelectionManager.OnCharacterSelected += CharacterSelectedCallback;
+
         playerStats = playerData.BaseStats;
 
         foreach(KeyValuePair<Stat, float> kvp in playerStats)
@@ -32,6 +34,13 @@ public class PlayerStatsManager : MonoBehaviour
             objectAddends.Add(kvp.Key, 0);
         }
     }
+
+    private void OnDestroy()
+    {
+        CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
+    }
+
+    
 
     private void Start()
     {
@@ -77,5 +86,13 @@ public class PlayerStatsManager : MonoBehaviour
 
         foreach (var element in playerStatsDependencies)
             element.UpdateStats(this);
+    }
+
+    private void CharacterSelectedCallback(CharacterDataSO characterData)
+    {
+        playerData = characterData;
+        playerStats = playerData.BaseStats;
+
+        UpdatePlayerStats();
     }
 }

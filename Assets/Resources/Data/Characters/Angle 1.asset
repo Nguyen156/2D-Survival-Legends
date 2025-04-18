@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c469144096153bf469a5212734685c65, type: 3}
-  m_Name: CharacterData
+  m_Name: Angle 1
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Sprite>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: Angle 1
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 7f538904bbf379a4db78106b46a38947, type: 3}
   <Price>k__BackingField: 0
   attack: 0
   attackSpeed: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
     public static Player instance;
 
     [Header(" Components ")]
+    private SpriteRenderer sr;
     private PlayerHealth playerHealth;
     private PlayerLevel playerLevel;
 
@@ -18,9 +20,20 @@ public class Player : MonoBehaviour
         else
             Destroy(gameObject);
 
+        sr = GetComponentInChildren<SpriteRenderer>();
+
         playerHealth = GetComponent<PlayerHealth>();
         playerLevel = GetComponent<PlayerLevel>();
+
+        CharacterSelectionManager.OnCharacterSelected += CharacterSelectedCallback;
     }
+
+    private void OnDestroy()
+    {
+        CharacterSelectionManager.OnCharacterSelected -= CharacterSelectedCallback;
+    }
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -42,5 +55,10 @@ public class Player : MonoBehaviour
     public bool HasLevelUp()
     {
         return playerLevel.HasLevelUp();
+    }
+
+    private void CharacterSelectedCallback(CharacterDataSO characterData)
+    {
+        sr.sprite = characterData.Sprite;
     }
 }

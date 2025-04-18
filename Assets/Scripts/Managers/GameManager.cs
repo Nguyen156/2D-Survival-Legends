@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [Header(" Actions ")]
+    public static Action OnGamePaused;
+    public static Action OnGameResumed;
 
     private void Awake()
     {
@@ -26,6 +31,24 @@ public class GameManager : MonoBehaviour
     public void StartWeaponSelection() => SetGameState(GameState.WEAPONSELECTION);
     public void StartShop() => SetGameState(GameState.SHOP);
     public void ReloadScene() => SceneManager.LoadScene(0);
+
+    public void PauseButtonCallback()
+    {
+        Time.timeScale = 0;
+        OnGamePaused?.Invoke();
+    }
+
+    public void ResumeButtonCallback()
+    {
+        Time.timeScale = 1;
+        OnGameResumed?.Invoke();
+    }
+
+    public void RestartFromPause()
+    {
+        Time.timeScale = 1;
+        ReloadScene();
+    }
 
     public void SetGameState(GameState gameState)
     {
