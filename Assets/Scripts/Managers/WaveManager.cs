@@ -55,7 +55,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         localCounters.Clear();
 
         foreach(var segment in waves[waveIndex].segments)
-            localCounters.Add(1);
+            localCounters.Add(0);
 
         timer = 0;
         isTimerOn = true;
@@ -109,6 +109,9 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             {
                 Instantiate(segment.prefab, GetSpawnPos(), Quaternion.identity, transform);
                 localCounters[i]++;
+
+                if(segment.spawnBoss)
+                    localCounters[i] += Mathf.Infinity;
             }
         }
 
@@ -154,4 +157,5 @@ public struct WaveSegment
     public float tEnd;
     public float spawnFrequency;
     public GameObject prefab;
+    public bool spawnBoss;
 }

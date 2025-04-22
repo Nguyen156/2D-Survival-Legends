@@ -72,7 +72,6 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 128
-  level: 0
   damage: 0
   attackDelay: 1
   aimLerp: 12

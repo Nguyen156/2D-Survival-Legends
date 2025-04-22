@@ -85,6 +85,11 @@ public class RangeEnemyAttack : MonoBehaviour
     {
         Vector3 direction = (player.transform.position - transform.position).normalized;
 
+        InstantShoot(direction);
+    }
+
+    public void InstantShoot(Vector2 direction)
+    {
         EnemyBullet newBullet = bulletPool.Get();
 
         newBullet.Shoot(damage, direction, bulletSpeed);

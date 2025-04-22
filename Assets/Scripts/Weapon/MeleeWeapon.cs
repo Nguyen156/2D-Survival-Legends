@@ -53,6 +53,8 @@ public class MeleeWeapon : Weapon
         state = State.Attack;
 
         damagedEnemies.Clear();
+
+        AudioManager.instance.PlaySFX(2);
     }
 
     private void StopDealDamage()

@@ -10,6 +10,7 @@ public class EnemyBullet : MonoBehaviour
     private RangeEnemyAttack rangeEnemyAttack;
 
     [Header(" Settings ")]
+    [SerializeField] private float angularSpeed;
     private int damage;
 
     private void Awake()
@@ -34,7 +35,13 @@ public class EnemyBullet : MonoBehaviour
     public void Shoot(int damage, Vector3 direction, float moveSpeed)
     {
         this.damage = damage;
+
+        if (Mathf.Abs(direction.x + 1) < 0.01f)
+            direction.y += .01f;
+
         rb.velocity = direction * moveSpeed;
+
+        rb.angularVelocity = angularSpeed;
 
         StartCoroutine(IEReleaseBullet());
     }
@@ -42,6 +49,7 @@ public class EnemyBullet : MonoBehaviour
     public void Reload()
     {
         rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

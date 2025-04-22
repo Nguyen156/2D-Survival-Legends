@@ -21,6 +21,8 @@ public class DropManager : MonoBehaviour
     private void Awake()
     {
         Enemy.OnDeath += EnemyDeathCallback;
+        Enemy.OnBossDeath += BossEnemyDeathCallback;
+
         Candy.OnCollected += ReleaseCandy;
         Cash.OnCollected += ReleaseCash;
     }
@@ -28,6 +30,8 @@ public class DropManager : MonoBehaviour
     private void OnDestroy()
     {
         Enemy.OnDeath -= EnemyDeathCallback;
+        Enemy.OnBossDeath -= BossEnemyDeathCallback;
+
         Candy.OnCollected -= ReleaseCandy;
         Cash.OnCollected -= ReleaseCash;
     }
@@ -85,6 +89,11 @@ public class DropManager : MonoBehaviour
         TryDropChest(enemyPos);
     }
 
+    private void BossEnemyDeathCallback(Vector2 enemyPos)
+    {
+        DropChest(enemyPos);
+    }
+
     private void TryDropChest(Vector2 spawnPos)
     {
         bool canDropChest = Random.Range(0, 100) < chestDropChance;
@@ -92,6 +101,11 @@ public class DropManager : MonoBehaviour
         if (!canDropChest)
             return;
 
+        DropChest(spawnPos);
+    }
+
+    private void DropChest(Vector2 spawnPos)
+    {
         Instantiate(chestPrefab, spawnPos, Quaternion.identity, transform);
     }
 

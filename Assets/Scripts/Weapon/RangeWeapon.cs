@@ -100,6 +100,8 @@ public class RangeWeapon : Weapon
         int damage = GetDamage(out bool isCriticalHit);
 
         newBullet.Shoot(damage, transform.up, bulletSpeed, isCriticalHit);
+
+        AudioManager.instance.PlaySFX(1);
     }
 
     public override void UpdateStats(PlayerStatsManager playerStatsManager)

@@ -24,15 +24,20 @@ public class Enemy : MonoBehaviour
     protected bool hasSpawned;
 
     [Header(" Health ")]
-    [SerializeField] private int maxHealth;
-    private int health;
+    [SerializeField] protected int maxHealth;
+    protected int health;
 
     [Header(" Attack Info ")]
     [SerializeField] protected float attackRange;
 
     [Header(" Actions ")]
+    //damage - position - isCritical
     public static Action<int, Vector2, bool> OnDamageTaken;
+
+    //position
     public static Action<Vector2> OnDeath;
+    public static Action<Vector2> OnBossDeath;
+    protected Action OnSpawnSequenceCompleted;
 
     [Header(" DEBUG ")]
     [SerializeField] private bool gizmos;
@@ -85,10 +90,10 @@ public class Enemy : MonoBehaviour
             seconds -= 0.05f;
         }
 
-        SpawnSequenceFinished();
+        SpawnSequenceCompleted();
     }
 
-    private void SpawnSequenceFinished()
+    private void SpawnSequenceCompleted()
     {
         SetRendererVisibility();
 
@@ -96,7 +101,10 @@ public class Enemy : MonoBehaviour
 
         cd.enabled = true;
 
-        movement.StorePlayer(player);
+        if(movement != null)
+            movement.StorePlayer(player);
+
+        OnSpawnSequenceCompleted?.Invoke();
     }
 
     private void SetRendererVisibility(bool visibility = true)
@@ -115,10 +123,15 @@ public class Enemy : MonoBehaviour
             Die();
     }
 
-    private void Die()
+    public virtual void Die()
     {
         OnDeath?.Invoke(transform.position);
 
+        DieAfterWave();
+    }
+
+    public void DieAfterWave()
+    {
         deathVFX.transform.parent = null;
         deathVFX.Play();
 

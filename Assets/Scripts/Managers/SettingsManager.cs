@@ -51,6 +51,9 @@ public class SettingsManager : MonoBehaviour, IWantToBeSaved
     private void Start()
     {
         HideCreditsPanel();
+
+        OnSFXStateChanged?.Invoke(sfxState);
+        OnMusicStateChanged?.Invoke(musicState);
     }
 
     private void SFXButtonCallback()
