@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
 
     [Header(" Elements ")]
     protected Player player;
+    protected bool facingRight = true;
 
     [Header(" Effects ")]
     [SerializeField] private ParticleSystem deathVFX;
@@ -25,6 +26,8 @@ public class Enemy : MonoBehaviour
 
     [Header(" Health ")]
     [SerializeField] protected int maxHealth;
+    [SerializeField] protected int healthPerWave;
+    [SerializeField] protected int waveToSpawn;
     protected int health;
 
     [Header(" Attack Info ")]
@@ -56,7 +59,7 @@ public class Enemy : MonoBehaviour
         if(player == null)
             Destroy(gameObject);
        
-        health = maxHealth;
+        UpdateHealth();
 
         StartCoroutine(SpawnCoroutine());
     }
@@ -64,7 +67,17 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        
+        HandleFlip();
+    }
+
+    public void UpdateHealth()
+    {
+        int waveNumber = WaveManager.instance.GetCurrentWaveIndex() + 1;
+        if(waveNumber >= waveToSpawn)
+        {
+            maxHealth += healthPerWave * (waveNumber - waveToSpawn);
+            health = maxHealth;
+        }
     }
 
     private IEnumerator SpawnCoroutine()
@@ -136,6 +149,23 @@ public class Enemy : MonoBehaviour
         deathVFX.Play();
 
         Destroy(gameObject);
+    }
+
+    protected void HandleFlip()
+    {
+        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        if(distanceToPlayer <= .01f)
+            return;
+
+        if (player.transform.position.x < transform.position.x && facingRight
+            || player.transform.position.x > transform.position.x && !facingRight)
+            Flip();
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        transform.Rotate(0, 180, 0);
     }
 
     private void OnDrawGizmos()

@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour, IGameStateListener, IPlayerStatsD
             return;
 
         rb.velocity = moveDir.normalized * moveSpeed;
+        Player.instance.HandleFlip(moveDir.x);
     }
 
     public void GameStateChangedCallback(GameState gameState)
@@ -65,7 +66,5 @@ public class PlayerController : MonoBehaviour, IGameStateListener, IPlayerStatsD
     {
         float moveSpeedPercent = playerStats.GetStatValue(Stat.MoveSpeed) / 100;
         moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
-        
-
     }
 }

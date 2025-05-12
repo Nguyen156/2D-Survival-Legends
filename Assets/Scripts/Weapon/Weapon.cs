@@ -26,6 +26,7 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
 
     [Header(" Animations ")]
     [SerializeField] protected float aimLerp;
+    private bool facingRight = true;
 
     protected virtual void Awake()
     {
@@ -101,11 +102,11 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
     {
         Dictionary<Stat, float> calculatedStats = WeaponStatsCalculator.GetStats(WeaponData,Level);
 
-        damage          = Mathf.RoundToInt(calculatedStats[Stat.Attack]);
-        attackDelay     = 1f / (calculatedStats[Stat.AttackSpeed]);
+        damage          = Mathf.RoundToInt(calculatedStats[Stat.Damage]);
+        attackDelay     = 10f / (calculatedStats[Stat.AttackSpeed]);
         criticalChance  = Mathf.RoundToInt(calculatedStats[Stat.CriticalChance]);
         criticalPercent = Mathf.RoundToInt(calculatedStats[Stat.CriticalPercent]);
-        attackRange     = calculatedStats[Stat.Range];
+        attackRange     = Mathf.RoundToInt(calculatedStats[Stat.Range]);
 
     }
 
@@ -121,4 +122,16 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
     }
 
     public void Upgrade() => UpgradeTo(Level + 1);
+
+    protected void HandleFip(float xValue)
+    {
+        if (facingRight && xValue < transform.position.x || !facingRight && xValue > transform.position.x)
+            Flip();
+    }
+
+    private void Flip()
+    {
+        facingRight = !facingRight;
+        transform.GetChild(0).Rotate(180, 0, 0);
+    }
 }

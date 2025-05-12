@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerStatsManager : MonoBehaviour
+public class PlayerStatsManager : MonoBehaviour, IGameStateListener
 {
     public static PlayerStatsManager instance;
 
@@ -94,5 +94,11 @@ public class PlayerStatsManager : MonoBehaviour
         playerStats = playerData.BaseStats;
 
         UpdatePlayerStats();
+    }
+
+    public void GameStateChangedCallback(GameState gameState)
+    {
+        if (gameState == GameState.GAME)
+            UpdatePlayerStats();
     }
 }

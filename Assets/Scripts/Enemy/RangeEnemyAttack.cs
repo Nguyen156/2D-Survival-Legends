@@ -12,6 +12,7 @@ public class RangeEnemyAttack : MonoBehaviour
     [Header(" Settings ")]
     [SerializeField] private float bulletSpeed;
     [SerializeField] private int damage;
+    [SerializeField] private int damagePerWave;
     [SerializeField] private float attackDelay;
     private float attackTimer;
 
@@ -70,6 +71,13 @@ public class RangeEnemyAttack : MonoBehaviour
     {
         if(attackTimer > 0)
             attackTimer -= Time.deltaTime;  
+    }
+
+    public void SetDamage(int waveToSpawn)
+    {
+        int waveNumber = WaveManager.instance.GetCurrentWaveIndex() + 1;
+        if (waveNumber >= waveToSpawn)
+            damage += damagePerWave * (waveNumber - waveToSpawn);
     }
 
     public void AutoAim()

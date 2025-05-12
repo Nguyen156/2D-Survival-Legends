@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 {
@@ -8,6 +9,8 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Transform buttonParent;
     [SerializeField] private UI_WeaponSelectionButton prefab;
     [SerializeField] private PlayerWeapon playerWeapon;
+    [SerializeField] private Button goButton;
+
 
     [Header(" Data ")]
     [SerializeField] private WeaponDataSO[] starterWeapons;
@@ -37,6 +40,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
     private void Setup()
     {
         buttonParent.Clear();
+        goButton.interactable = false;
 
         for(int i = 0; i < 3; i++)
             GenerateWeaponSelectButtons();
@@ -48,7 +52,8 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];
 
-        int level = Random.Range(0, 4);
+        //int level = Random.Range(0, 4);
+        int level = 0;
 
         newWeaponButton.Setup(weaponData, level);
 
@@ -58,6 +63,8 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
     private void WeaponSelectedCallback(UI_WeaponSelectionButton weaponButton, WeaponDataSO weaponData, int weaponLevel)
     {
+        goButton.interactable = true;
+
         selectedWeapon = weaponData;
         initialWeaponLevel = weaponLevel;
 

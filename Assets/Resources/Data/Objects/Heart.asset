@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Heart
   <Icon>k__BackingField: {fileID: 21300000, guid: 94243d9d34caa244bab355e648c592f6, type: 3}
-  <Price>k__BackingField: 100
-  <RecyclePrice>k__BackingField: 100
-  <Rarity>k__BackingField: 1
+  <Price>k__BackingField: 30
+  <RecyclePrice>k__BackingField: 24
+  <Rarity>k__BackingField: 2
   statDatas:
-  - stat: 0
-    value: -1
+  - stat: 4
+    value: 2
   - stat: 5
     value: 5

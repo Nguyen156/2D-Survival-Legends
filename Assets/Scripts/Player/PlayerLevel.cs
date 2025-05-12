@@ -71,6 +71,10 @@ public class PlayerLevel : MonoBehaviour
         currentXp = 0;
 
         UpdateRequiredXp();
+
+        PlayerStatsManager.instance.AddPlayerStat(Stat.MaxHealth, 1);
+
+        AudioManager.instance.PlaySFX(4);
     }
 
     public bool HasLevelUp()

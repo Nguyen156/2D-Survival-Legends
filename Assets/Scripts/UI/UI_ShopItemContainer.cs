@@ -62,7 +62,11 @@ public class UI_ShopItemContainer : MonoBehaviour
         WeaponData = weaponData;
 
         icon.sprite = weaponData.Sprite;
-        nameText.text = weaponData.Name + $" (Lv {level + 1})";
+        if (level + 1 < 4)
+            nameText.text = weaponData.Name + $" (Lv {level + 1})";
+        else
+            nameText.text = weaponData.Name + $" (Lv {level + 1}(Max))";
+
 
         int weaponPrice = WeaponStatsCalculator.GetPurchasePrice(weaponData, level);
         priceText.text = weaponPrice.ToString();

@@ -16,6 +16,13 @@ public class EnemyBullet : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        WaveManager.OnWaveCompleted += WaveCompletedCallback;
+    }
+
+    private void OnDestroy()
+    {
+        WaveManager.OnWaveCompleted -= WaveCompletedCallback;
     }
 
     private IEnumerator IEReleaseBullet()
@@ -60,5 +67,11 @@ public class EnemyBullet : MonoBehaviour
 
             rangeEnemyAttack.ReleaseBullet(this);
         }
+    }
+
+    private void WaveCompletedCallback()
+    {
+        if (gameObject.activeSelf)
+            rangeEnemyAttack.ReleaseBullet(this);
     }
 }

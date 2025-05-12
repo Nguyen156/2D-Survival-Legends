@@ -11,7 +11,7 @@ public class RangeWeapon : Weapon
 
     [Header(" Settings ")]
     [SerializeField] private float bulletSpeed;
-    private Vector3 originalUpVector;
+    
 
     [Header(" Pooling ")]
     private ObjectPool<Bullet> bulletPool;
@@ -25,7 +25,6 @@ public class RangeWeapon : Weapon
     {
         base.Start();
 
-        originalUpVector = transform.up;
         bulletPool = new ObjectPool<Bullet>(CreateFunc, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
@@ -70,18 +69,23 @@ public class RangeWeapon : Weapon
     private void AutoAim()
     {
         Enemy closestEnemy = GetClosestEnemy();
-        Vector3 targetUpVector = originalUpVector;
+        bool facingRight = Player.instance.FacingRight;
+        Vector3 targetDir = facingRight ? Vector3.right : Vector3.left;
 
         if (closestEnemy != null)
         {
-            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;
+            targetDir = (closestEnemy.transform.position - transform.position).normalized;
+            transform.right = targetDir;
+
+            HandleFip(closestEnemy.transform.position.x);
 
             ManageAttack();
             return;
         }
 
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, aimLerp * Time.deltaTime);
+        //transform.right = Vector3.Lerp(transform.right, targetDir, aimLerp * Time.deltaTime);
+        transform.right = targetDir;
+        HandleFip(Mathf.Infinity);
     }
 
     private void ManageAttack()
@@ -99,7 +103,7 @@ public class RangeWeapon : Weapon
 
         int damage = GetDamage(out bool isCriticalHit);
 
-        newBullet.Shoot(damage, transform.up, bulletSpeed, isCriticalHit);
+        newBullet.Shoot(damage, transform.right, bulletSpeed, isCriticalHit);
 
         AudioManager.instance.PlaySFX(1);
     }
@@ -108,7 +112,7 @@ public class RangeWeapon : Weapon
     {
         SetupStats();
 
-        damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
+        damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Damage) / 100));
         attackDelay /= (1 + playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
         criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));

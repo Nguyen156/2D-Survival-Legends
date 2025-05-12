@@ -13,12 +13,14 @@ public class RangeEnemy : Enemy
     {
         base.Awake();
         attack = GetComponent<RangeEnemyAttack>();
+
         attack.StorePlayer(player);
     }
 
     protected override void Start()
     {
         base.Start();
+        attack.SetDamage(waveToSpawn);
     }
 
     // Update is called once per frame

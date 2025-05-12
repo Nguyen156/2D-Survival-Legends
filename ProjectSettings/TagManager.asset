@@ -44,6 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Items
+    uniqueID: 155342597
+    locked: 0
   - name: Top
     uniqueID: 3193639303
+    locked: 0
+  - name: Bullet
+    uniqueID: 2115337573
     locked: 0

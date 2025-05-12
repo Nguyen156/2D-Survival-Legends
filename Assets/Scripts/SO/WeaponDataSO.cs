@@ -8,12 +8,12 @@ public class WeaponDataSO : ScriptableObject
     [field: SerializeField] public string Name {  get; private set; }
     [field: SerializeField] public Sprite Sprite {  get; private set; }
     [field: SerializeField] public int Price {  get; private set; }
-    [field: SerializeField] public int RecyclePrice {  get; private set; }
+    //[field: SerializeField] public int RecyclePrice {  get; private set; }
 
     [field: SerializeField] public Weapon Prefab { get; private set; }
 
     [Space]
-    public float attack;
+    public float damage;
     public float attackSpeed;
     public float criticalChance;
     public float criticalPercent;
@@ -25,7 +25,7 @@ public class WeaponDataSO : ScriptableObject
         {
             return new Dictionary<Stat, float>()
             {
-                {Stat.Attack, attack},
+                {Stat.Damage, damage},
                 {Stat.AttackSpeed, attackSpeed},
                 {Stat.CriticalChance, criticalChance},
                 {Stat.CriticalPercent, criticalPercent},

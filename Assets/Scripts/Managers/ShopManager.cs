@@ -20,7 +20,9 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     [Header(" Reroll ")]
     [SerializeField] private Button rerollButton;
     [SerializeField] private int rerollPrice;
+    [SerializeField] private int rerollIncrease;
     [SerializeField] private TextMeshProUGUI rerollPriceText;
+    private int waveNumber;
 
     [Header(" Actions ")]
     public static Action OnItemPurchase;
@@ -44,6 +46,7 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         {
             case GameState.SHOP:
                 Setup();
+                CalculateRerollIncrease();
                 UpdateRerollVisuals();
                 break;
         }
@@ -79,7 +82,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             UI_ShopItemContainer newWeapon = Instantiate(shopItemContainerPrefab, shopItemParent);
             WeaponDataSO randomWeapon = ResourcesManager.GetRandomWeapon();
 
-            newWeapon.Setup(randomWeapon, Random.Range(0, 2));
+            int randomLevel;
+            if (waveNumber < 6)
+                randomLevel = Random.Range(0, 2);
+            else
+                randomLevel = Random.Range(0, 4);
+
+            newWeapon.Setup(randomWeapon, randomLevel);
         }
 
         for(int i = 0; i < objectContainerCount; i++)
@@ -92,15 +101,29 @@ public class ShopManager : MonoBehaviour, IGameStateListener
         }
     }
 
+    private void CalculateRerollIncrease()
+    {
+        waveNumber = WaveManager.instance.GetCurrentWaveIndex();
+        rerollIncrease = Mathf.Max(1, Mathf.FloorToInt(0.4f * waveNumber));
+
+        rerollPrice = Mathf.FloorToInt(waveNumber * 0.75f) + rerollIncrease;
+    }
+
     public void Reroll()
     {
         Setup();
-        CurrencyManager.instance.UseCurrency(rerollPrice);
+
+        AudioManager.instance.PlaySFX(9);
+
+        int currentRerollPrice = rerollPrice;
+        rerollPrice += rerollIncrease;
+
+        CurrencyManager.instance.UseCurrency(currentRerollPrice);
     }
 
     public void UpdateRerollVisuals()
     {
-        rerollPriceText.text = rerollPrice.ToString();
+        rerollPriceText.text = "REROLL - " + rerollPrice;
         rerollButton.interactable = CurrencyManager.instance.HasEnoughCurrency(rerollPrice);
     }
 
@@ -111,10 +134,13 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
     private void ItemPurchasedCallback(UI_ShopItemContainer container, int weaponLevel)
     {
+
         if (container.WeaponData != null)
             TryPurchaseWeapon(container, weaponLevel);
         else
             PurchaseObject(container);
+
+        AudioManager.instance.PlaySFX(10);
     }
 
     private void TryPurchaseWeapon(UI_ShopItemContainer container, int weaponLevel)

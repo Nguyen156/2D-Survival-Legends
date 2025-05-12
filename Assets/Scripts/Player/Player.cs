@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     private PlayerHealth playerHealth;
     private PlayerLevel playerLevel;
 
+    public bool FacingRight { get; private set; } = true;
+
     private void Awake()
     {
         if(instance == null)
@@ -50,6 +52,9 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         playerHealth.TakeDamage(damage);
+
+        AudioManager.instance.PlaySFX(11);
+        CameraManager.instance.ScreenShake();
     }
 
     public bool HasLevelUp()
@@ -60,5 +65,17 @@ public class Player : MonoBehaviour
     private void CharacterSelectedCallback(CharacterDataSO characterData)
     {
         sr.sprite = characterData.Sprite;
+    }
+
+    public void HandleFlip(float xValue)
+    {
+        if (xValue < 0 && Player.instance.FacingRight || xValue > 0 && !FacingRight)
+            Flip();
+    }
+
+    private void Flip()
+    {
+        FacingRight = !FacingRight;
+        sr.flipX = !FacingRight;
     }
 }

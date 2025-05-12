@@ -17,7 +17,15 @@ public class DamageText : MonoBehaviour
     public void Animate(string damage, bool isCriticalHit)
     {
         damageText.text = damage;
-        damageText.color = isCriticalHit ? Color.red : Color.white;
+        damageText.color = isCriticalHit ? Color.yellow : Color.white;
+
+        anim.Play("Animate");
+    }
+
+    public void Animate(string damage)
+    {
+        damageText.text = damage;
+        damageText.color = Color.red;
 
         anim.Play("Animate");
     }

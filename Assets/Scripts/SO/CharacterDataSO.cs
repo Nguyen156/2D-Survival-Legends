@@ -20,7 +20,6 @@ public class CharacterDataSO : ScriptableObject
     public float range;
     public float healthRecoverySpeed;
     public float armor;
-    public float luck;
     public float dodge;
     public float lifeSteal;
 
@@ -30,7 +29,7 @@ public class CharacterDataSO : ScriptableObject
         {
             return new Dictionary<Stat, float>
             {
-                {Stat.Attack,              attack},
+                {Stat.Damage,              attack},
                 {Stat.AttackSpeed,         attackSpeed},
                 {Stat.CriticalChance,      criticalChance},
                 {Stat.CriticalPercent,     criticalPercent},
@@ -39,7 +38,6 @@ public class CharacterDataSO : ScriptableObject
                 {Stat.Range,               range},
                 {Stat.HealthRecoverySpeed, healthRecoverySpeed},
                 {Stat.Armor,               armor},
-                {Stat.Luck,                luck},
                 {Stat.Dodge,               dodge},
                 {Stat.LifeSteal,           lifeSteal}
             };

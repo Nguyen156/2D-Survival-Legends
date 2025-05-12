@@ -1,10 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Random = UnityEngine.Random;
+
 [RequireComponent(typeof(UI_WaveManager))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveManager instance;
+
     [Header(" Elements ")]
     [SerializeField] private Player player;
     private UI_WaveManager ui;
@@ -19,14 +24,29 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Wave[] waves;
     private List<float> localCounters = new List<float>();
 
+    [Header(" Actions ")]
+    public static Action OnWaveCompleted;
+
     private void Awake()
     {
+        if(instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+
         ui = GetComponent<UI_WaveManager>();
+
+        Enemy.OnBossDeath += BossDeathCallback;
+    }
+
+    private void OnDestroy()
+    {
+        Enemy.OnBossDeath -= BossDeathCallback;
     }
 
     private void Start()
     {
-        
+
     }
 
     private void Update()
@@ -36,13 +56,25 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         if (timer < waveDuration)
         {
-            ui.UpdatTimerText($"{waveDuration - (int)timer}");
+            //ui.ChangeTimerTextColor((int)waveDuration - (int)timer);
+            int timeLeft = Mathf.CeilToInt(waveDuration - (timer + Time.deltaTime));
+            ui.UpdatTimerText($"{timeLeft}");
+
+            ui.ChangeTimerTextColor(timeLeft);
 
             ManageWave();
         }
         else
         {
-            StartWaveTransition();
+            isTimerOn = false;
+            DefeatAllEnemies();
+
+            AudioManager.instance.PlaySFX(8, false);
+            ui.UpdateWaveCompltedText("WAVE COMPLETED!");
+
+            OnWaveCompleted?.Invoke();
+
+            Invoke(nameof(StartWaveTransition), 2f);
         }
     }
 
@@ -50,6 +82,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void StartWave(int waveIndex)
     {
         Debug.Log("Start wave: " + waveIndex);
+        ui.UpdateWaveCompltedText("");
         ui.UpdateWaveText($"Wave {currentWaveIndex + 1} / {waves.Length}");
 
         localCounters.Clear();
@@ -67,14 +100,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         DefeatAllEnemies();
 
         currentWaveIndex++;
+        waveDuration += 5;
 
         if (currentWaveIndex >= waves.Length)
-        {
-            ui.UpdateWaveText("Victory !!!");
-            ui.UpdatTimerText(" ");
-
             GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
-        }
         else
             GameManager.instance.WaveCompletedCallback();
     }
@@ -110,8 +139,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 Instantiate(segment.prefab, GetSpawnPos(), Quaternion.identity, transform);
                 localCounters[i]++;
 
-                if(segment.spawnBoss)
-                    localCounters[i] += Mathf.Infinity;
+                if (segment.spawnBoss)
+                {
+                    //localCounters[i] += Mathf.Infinity;
+                    isTimerOn = false;
+                    ui.UpdatTimerText("BOSS");
+                }
             }
         }
 
@@ -121,8 +154,10 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     {
         Vector2 direction = Random.onUnitSphere;
         Vector2 offset = direction.normalized * Random.Range(10, 16);
-
         Vector2 targetPos = (Vector2)player.transform.position + offset;
+
+        targetPos.x = Mathf.Clamp(targetPos.x, -Constants.arenaSize.x / 2, Constants.arenaSize.x / 2);
+        targetPos.y = Mathf.Clamp(targetPos.y, -Constants.arenaSize.y / 2, Constants.arenaSize.y / 2);
 
         return targetPos;
     }
@@ -141,6 +176,13 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 break;
         }
     }
+
+    private void BossDeathCallback(Vector2 enemyPos)
+    {
+        StartWaveTransition();
+    }
+
+    public int GetCurrentWaveIndex() => currentWaveIndex;
 }
 
 [System.Serializable]

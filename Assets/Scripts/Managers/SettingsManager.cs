@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Nguyen.SaveData;
+using Nguyen.SaveSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -123,10 +123,10 @@ public class SettingsManager : MonoBehaviour, IWantToBeSaved
         sfxState = true;
         musicState = true;
 
-        if(SaveData.TryLoad(this, "SFX", out object sfxStateObject))
+        if(SaveSystem.TryLoad(this, "SFX", out object sfxStateObject))
             sfxState = (bool)sfxStateObject;
         
-        if(SaveData.TryLoad(this, "Music", out object musicStateObject))
+        if(SaveSystem.TryLoad(this, "Music", out object musicStateObject))
             musicState = (bool)musicStateObject;
 
         UpdateSFXVisuals();
@@ -135,7 +135,7 @@ public class SettingsManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        SaveData.Save(this, "SFX", sfxState);
-        SaveData.Save(this, "Music", musicState);
+        SaveSystem.Save(this, "SFX", sfxState);
+        SaveSystem.Save(this, "Music", musicState);
     }
 }

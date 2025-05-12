@@ -24,28 +24,50 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetGameState(GameState.MENU);
+        StartMenu();
     }
 
-    public void StartGame() => SetGameState(GameState.GAME);
-    public void StartWeaponSelection() => SetGameState(GameState.WEAPONSELECTION);
-    public void StartShop() => SetGameState(GameState.SHOP);
-    public void ReloadScene() => SceneManager.LoadScene(0);
+    public void StartMenu() => SetGameState(GameState.MENU);
+    public void StartGame()
+    {
+        AudioManager.instance.PlaySFX(9);
+        SetGameState(GameState.GAME);
+    }
+
+    public void StartWeaponSelection()
+    {
+        AudioManager.instance.PlaySFX(9);
+        SetGameState(GameState.WEAPONSELECTION);
+    }
+
+    public void StartShop()
+    {
+        AudioManager.instance.PlaySFX(9);
+        SetGameState(GameState.SHOP);
+    }
+    public void ReloadScene()
+    {
+        AudioManager.instance.PlaySFX(9);
+        SceneManager.LoadScene(0);
+    }
 
     public void PauseButtonCallback()
     {
+        AudioManager.instance.PlaySFX(9);
         Time.timeScale = 0;
         OnGamePaused?.Invoke();
     }
 
     public void ResumeButtonCallback()
     {
+        AudioManager.instance.PlaySFX(9);
         Time.timeScale = 1;
         OnGameResumed?.Invoke();
     }
 
     public void RestartFromPause()
     {
+        AudioManager.instance.PlaySFX(9);
         Time.timeScale = 1;
         ReloadScene();
     }

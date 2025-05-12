@@ -151,11 +151,8 @@ public class EnemyBoss : Enemy
     {
         Vector2 targetPos = Vector2.zero;
 
-        targetPos.x = Random.Range(-14f, 14f);
-        targetPos.y = Random.Range(-6f, 6f);
-
-        //targetPos.x = Mathf.Clamp(targetPos.x, -14, 14);
-        //targetPos.y = Mathf.Clamp(targetPos.y, -6, 6);
+        targetPos.x = Mathf.Clamp(targetPos.x, -Constants.arenaSize.x / 3, Constants.arenaSize.x / 3);
+        targetPos.y = Mathf.Clamp(targetPos.y, -Constants.arenaSize.y / 3, Constants.arenaSize.y / 3);
 
         return targetPos;
     }

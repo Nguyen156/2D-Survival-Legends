@@ -18,13 +18,13 @@ public class StatContainerManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public static void GenerateStatContainers(Dictionary<Stat, float> statDictionary, Transform parent)
+    public static void GenerateStatContainers(Dictionary<Stat, float> statDictionary, Transform parent, bool usePercent = true)
     {
         parent.Clear();
-        instance.GenerateContainers(statDictionary, parent);
+        instance.GenerateContainers(statDictionary, parent, usePercent);
     }
 
-    private void GenerateContainers(Dictionary<Stat, float> statDictionary, Transform parent)
+    private void GenerateContainers(Dictionary<Stat, float> statDictionary, Transform parent, bool usePercent)
     {
         List<UI_StatContainer> statContainerList = new List<UI_StatContainer>();
 
@@ -34,7 +34,7 @@ public class StatContainerManager : MonoBehaviour
             statContainerList.Add(newStatContainer);
 
             Sprite icon = ResourcesManager.GetStatIcon(kvp.Key);
-            string statName = Enums.FormatStatName(kvp.Key);
+            string statName = Enums.FormatStatName(kvp.Key, usePercent);
             float statValue = Mathf.Round(kvp.Value);
 
             newStatContainer.Setup(icon, statName, statValue);

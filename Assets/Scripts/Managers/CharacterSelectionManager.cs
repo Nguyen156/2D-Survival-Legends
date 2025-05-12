@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Nguyen.SaveData;
+using Nguyen.SaveSystem;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 {
+    public static CharacterSelectionManager instance;
+
     [Header(" Elements ")]
     [SerializeField] private Transform characterButtonsParent;
     [SerializeField] private UI_CharacterButton characterButtonPrefab;
@@ -31,7 +33,10 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void Awake()
     {
-        
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void Start()
@@ -62,6 +67,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     private void CharacterSelectedCallback(int index)
     {
+        //AudioManager.instance.PlaySFX(9);
         selectedCharacterIndex = index;
 
         CharacterDataSO characterData = characterDatas[index];
@@ -87,6 +93,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         int price = characterDatas[selectedCharacterIndex].Price;
         CurrencyManager.instance.UsePremiumCurrency(price);
+        AudioManager.instance.PlaySFX(10);
 
         //Save the unlocked state
         unlockedStates[selectedCharacterIndex] = true;
@@ -107,10 +114,10 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         for (int i = 0; i < characterDatas.Length; i++)
             unlockedStates.Add(i == 0);
 
-        if(SaveData.TryLoad(this, UNLOCKED_STATES_KEY, out object unlockedStatesObject))
+        if(SaveSystem.TryLoad(this, UNLOCKED_STATES_KEY, out object unlockedStatesObject))
             unlockedStates = (List<bool>)unlockedStatesObject;
 
-        if (SaveData.TryLoad(this, LAST_SELECTED_CHARACTER_KEY, out object lastSelectedCharacterObject))
+        if (SaveSystem.TryLoad(this, LAST_SELECTED_CHARACTER_KEY, out object lastSelectedCharacterObject))
             lastSelectedCharacter = (int)lastSelectedCharacterObject;
 
         Initialize();
@@ -118,7 +125,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        SaveData.Save(this, UNLOCKED_STATES_KEY, unlockedStates);
-        SaveData.Save(this, LAST_SELECTED_CHARACTER_KEY, lastSelectedCharacter);
+        SaveSystem.Save(this, UNLOCKED_STATES_KEY, unlockedStates);
+        SaveSystem.Save(this, LAST_SELECTED_CHARACTER_KEY, lastSelectedCharacter);
     }
+
+    public void ResizeCharacterInfo() => CharacterSelectedCallback(lastSelectedCharacter);
 }

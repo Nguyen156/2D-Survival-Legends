@@ -10,6 +10,8 @@ public class Chest : MonoBehaviour, ICollectable
     public void Collect(Player player)
     {
         OnCollected?.Invoke();
+        AudioManager.instance.PlaySFX(6);
+
         Destroy(gameObject);
     }
 }

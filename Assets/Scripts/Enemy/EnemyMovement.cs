@@ -10,6 +10,12 @@ public class EnemyMovement : MonoBehaviour
     [Header(" Settings ")]
     [SerializeField] private float moveSpeed;
 
+    private void Start()
+    {
+        int currentWaveIndex = WaveManager.instance.GetCurrentWaveIndex();
+        moveSpeed *= (1 + (float)currentWaveIndex / 100);
+    }
+
     // Update is called once per frame
     void Update()
     {

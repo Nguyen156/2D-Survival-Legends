@@ -98,12 +98,33 @@ public class UIManager : MonoBehaviour, IGameStateListener
         pausePanel.SetActive(false);
     }
 
-    public void ShowRestartConfirmationPanel() => restartConfirmationPanel.SetActive(true);
+    public void ShowRestartConfirmationPanel()
+    {
+        AudioManager.instance.PlaySFX(9);
+        restartConfirmationPanel.SetActive(true);
+    }
     public void HideRestartConfirmationPanel() => restartConfirmationPanel.SetActive(false);
 
-    public void ShowCharacterSelection() => characterSelectionPanel.SetActive(true);
-    public void HideCharacterSelection() => characterSelectionPanel.SetActive(false); 
+    public void ShowCharacterSelection()
+    {
+        AudioManager.instance.PlaySFX(9);
+        CharacterSelectionManager.instance.ResizeCharacterInfo();
+        characterSelectionPanel.SetActive(true);
+    }
+    public void HideCharacterSelection()
+    {
+        //AudioManager.instance.PlaySFX(9);
+        characterSelectionPanel.SetActive(false); 
+    }
     
-    public void ShowSettings() => settingsPanel.SetActive(true);
-    public void HideSettings() => settingsPanel.SetActive(false);
+    public void ShowSettings()
+    {
+        AudioManager.instance.PlaySFX(9);
+        settingsPanel.SetActive(true);
+    }
+    public void HideSettings()
+    {
+        //AudioManager.instance.PlaySFX(9);
+        settingsPanel.SetActive(false);
+    }
 }

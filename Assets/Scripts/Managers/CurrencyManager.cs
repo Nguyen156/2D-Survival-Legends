@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Nguyen.SaveData;
+using Nguyen.SaveSystem;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour, IWantToBeSaved
@@ -37,7 +37,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void Load()
     {
-        if (SaveData.TryLoad(this, PREMIUM_CURRENCY_KEY, out object premiumCurrencyValue))
+        if (SaveSystem.TryLoad(this, PREMIUM_CURRENCY_KEY, out object premiumCurrencyValue))
             AddPremiumCurrency((int)premiumCurrencyValue);
         else
             AddPremiumCurrency(100);
@@ -45,7 +45,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
-        SaveData.Save(this, PREMIUM_CURRENCY_KEY, PremiumCurrency);
+        SaveSystem.Save(this, PREMIUM_CURRENCY_KEY, PremiumCurrency);
     }
 
     private void Start()

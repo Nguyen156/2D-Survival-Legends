@@ -41,6 +41,7 @@ public class UI_WeaponSelectionButton : MonoBehaviour
 
     public void Select()
     {
+        AudioManager.instance.PlaySFX(9);
         LeanTween.cancel(gameObject);
         LeanTween.scale(gameObject, Vector3.one * 1.075f, .3f).setEase(LeanTweenType.easeOutSine);
     }

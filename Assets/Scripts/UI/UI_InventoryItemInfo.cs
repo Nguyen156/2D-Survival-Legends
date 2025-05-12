@@ -36,9 +36,10 @@ public class UI_InventoryItemInfo : MonoBehaviour
 
     public void Setup(Weapon weapon)
     {
+        string maxlevel = weapon.Level + 1 < 4 ? "" : "(Max)"; 
         Setup
             (weapon.WeaponData.Sprite,
-            weapon.WeaponData.Name + $"(Lv {weapon.Level + 1})",
+            weapon.WeaponData.Name + $"(Lv {weapon.Level + 1}{maxlevel})",
             ColorHolder.GetColor(weapon.Level),
             WeaponStatsCalculator.GetRecyclePrice(weapon.WeaponData, weapon.Level),
             WeaponStatsCalculator.GetStats(weapon.WeaponData, weapon.Level)

@@ -122,44 +122,44 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
         switch (stat)
         {
-            case Stat.Attack:
-                value = Random.Range(1, 11);
-                upgradeValue = "+" + value + '%';
+            case Stat.Damage:
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.AttackSpeed:
                 value = Random.Range(1, 11);
-                upgradeValue = "+" + value + '%';
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.CriticalChance:
                 value = Random.Range(1, 11);
-                upgradeValue = "+" + value + '%';
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.CriticalPercent:
-                value = Random.Range(1, 6);
-                upgradeValue = "+" + value + 'x';
+                value = Random.Range(1, 2);
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.MoveSpeed:
-                value = Random.Range(1, 11);
-                upgradeValue = "+" + value + '%';
+                value = Random.Range(1, 6);
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.MaxHealth:
-                value = Random.Range(1, 11);
+                value = Random.Range(1, 10);
                 upgradeValue = "+" + value;
                 break;
 
             case Stat.Range:
-                value = Random.Range(1, 6);
+                value = Random.Range(1, 4);
                 upgradeValue = "+" + value;
                 break;
 
             case Stat.HealthRecoverySpeed:
                 value = Random.Range(1, 6);
-                upgradeValue = "+" + value +"%";
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.Armor:
@@ -167,19 +167,14 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 upgradeValue = "+" + value;
                 break;
 
-            case Stat.Luck:
-                value = Random.Range(1, 11);
-                upgradeValue = "+" + value + '%';
-                break;
-
             case Stat.Dodge:
                 value = Random.Range(1, 11);
-                upgradeValue = "+" + value + "%";
+                upgradeValue = "+" + value;
                 break;
 
             case Stat.LifeSteal:
                 value = Random.Range(1, 11);
-                upgradeValue = $"+{value}%";
+                upgradeValue = $"+{value}";
                 break;
 
             default:

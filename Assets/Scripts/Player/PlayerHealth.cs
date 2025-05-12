@@ -27,6 +27,9 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
     [Header(" Actions ")]
     public static Action<Vector2> OnAttackDodged;
 
+    //damge, position
+    public static Action<int,Vector2> OnDamageTaken;
+
     private void Awake()
     {
         Enemy.OnDamageTaken += EnemyTakeDamageCallback;
@@ -85,11 +88,13 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
             return;
         }
 
-        float realDamage = damage * Mathf.Clamp(1 - armor / 1000, 0, 10000);
+        float realDamage = Mathf.FloorToInt(damage * Mathf.Clamp(1 - armor / 1000, 1, 10000));
         realDamage = Mathf.Min(health, realDamage);
 
         health -= realDamage;
         UpdateUI();
+
+        OnDamageTaken?.Invoke((int)realDamage, transform.position);
 
         if (health <= 0)
             Die();

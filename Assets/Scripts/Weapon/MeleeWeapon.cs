@@ -36,7 +36,6 @@ public class MeleeWeapon : Weapon
         {
             case State.Idle:
                 AutoAim();
-                ManageAttack();
                 break;
 
             case State.Attack:
@@ -48,13 +47,14 @@ public class MeleeWeapon : Weapon
     private void StartAttack()
     {
         anim.Play("Attack");
+
         canDealDamage = true;
 
         state = State.Attack;
 
         damagedEnemies.Clear();
 
-        AudioManager.instance.PlaySFX(2);
+        AudioManager.instance.PlaySFX(10);
     }
 
     private void StopDealDamage()
@@ -71,7 +71,7 @@ public class MeleeWeapon : Weapon
 
     private void ManageAttack()
     {
-        if (attackTimer <= 0 && GetClosestEnemy() != null)
+        if (attackTimer <= 0)
         {
             StartAttack();
             attackTimer = attackDelay;
@@ -81,16 +81,24 @@ public class MeleeWeapon : Weapon
     private void AutoAim()
     {
         Enemy closestEnemy = GetClosestEnemy();
-        Vector3 targetUpVector = Vector3.up;
+        bool facingRight = Player.instance.FacingRight;
+        Vector3 targetDir = facingRight ? Vector3.right : Vector3.left;
 
         if (closestEnemy != null)
         {
-            targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;
+            targetDir = (closestEnemy.transform.position - transform.position).normalized;
+            transform.right = targetDir;
+
+            HandleFip(closestEnemy.transform.position.x);
+
+            ManageAttack();
             return;
         }
 
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, aimLerp * Time.deltaTime);
+        //transform.right = Vector3.Lerp(transform.right, targetDir, aimLerp * Time.deltaTime);
+        
+        transform.right = targetDir;
+        HandleFip(Mathf.Infinity);
     }
 
     private void Attack()
@@ -124,7 +132,8 @@ public class MeleeWeapon : Weapon
     {
         SetupStats();
 
-        damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
+        damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Damage) / 100));
+        Debug.Log(damage);
         attackDelay /= (1 + playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
 
         criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));

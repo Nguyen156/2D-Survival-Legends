@@ -11,5 +11,7 @@ public class Cash : DroppableCurrency
     protected override void Collected()
     {
         OnCollected?.Invoke(this);
+        AudioManager.instance.PlaySFX(6);
+
     }
 }

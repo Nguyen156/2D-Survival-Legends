@@ -6,12 +6,14 @@ public class MeleeEnemy : Enemy
 {
     [Header(" Settings ")]
     [SerializeField] private int damage;
+    [SerializeField] private int damagePerWave;
     [SerializeField] private float attackDelay;
     private float attackTimer;
 
     protected override void Start()
     {
         base.Start();
+        CalculateDamage();
     }
 
     protected override void Update()
@@ -27,6 +29,13 @@ public class MeleeEnemy : Enemy
             TryAttack();
         else
             Wait();
+    }
+
+    private void CalculateDamage()
+    {
+        int waveNumber = WaveManager.instance.GetCurrentWaveIndex() + 1;
+        if(waveNumber >= waveToSpawn)
+            damage += damagePerWave * (waveNumber - waveToSpawn);
     }
 
     private void TryAttack()

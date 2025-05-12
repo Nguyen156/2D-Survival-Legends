@@ -12,7 +12,7 @@ public enum GameState
 
 public enum Stat
 {
-    Attack,
+    Damage,
     AttackSpeed,
     CriticalChance,
     CriticalPercent,
@@ -21,20 +21,45 @@ public enum Stat
     Range,
     HealthRecoverySpeed,
     Armor,
-    Luck,
     Dodge,
     LifeSteal,
 }
 
 public static class Enums
 {
-    public static string FormatStatName(Stat stat)
+    public static string FormatStatName(Stat stat, bool usePercent = true)
     {
         string formatted = "";
         string unformat = stat.ToString();
 
         if (unformat.Length <= 0)
             return "";
+
+        if(usePercent)
+        {
+            switch (stat)
+            {
+                case Stat.AttackSpeed:
+                    formatted += "%"; 
+                    break;
+
+                case Stat.CriticalChance:
+                    formatted += "%";
+                    break;
+
+                case Stat.MoveSpeed:
+                    formatted += "%";
+                    break;
+
+                case Stat.Dodge:
+                    formatted += "%";
+                    break;
+
+                case Stat.LifeSteal:
+                    formatted += "%";
+                    break;
+            }
+        }
 
         formatted += unformat[0];
 
