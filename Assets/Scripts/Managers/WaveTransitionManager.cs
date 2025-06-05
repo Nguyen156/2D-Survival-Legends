@@ -133,7 +133,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 break;
 
             case Stat.CriticalChance:
-                value = Random.Range(1, 11);
+                value = Random.Range(1, 6);
                 upgradeValue = "+" + value;
                 break;
 
@@ -168,12 +168,12 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
                 break;
 
             case Stat.Dodge:
-                value = Random.Range(1, 11);
+                value = Random.Range(1, 6);
                 upgradeValue = "+" + value;
                 break;
 
             case Stat.LifeSteal:
-                value = Random.Range(1, 11);
+                value = Random.Range(1, 6);
                 upgradeValue = $"+{value}";
                 break;
 

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Pistol
   <Sprite>k__BackingField: {fileID: 21300000, guid: ac2ff62c5348a2e499c218c318577100, type: 3}
-  <Price>k__BackingField: 20
+  <Price>k__BackingField: 25
   <Prefab>k__BackingField: {fileID: 1434210380140246511, guid: b3988a08225bedf4882c2b0753fe41c5, type: 3}
-  damage: 12
+  damage: 8
   attackSpeed: 10
   criticalChance: 10
   criticalPercent: 2

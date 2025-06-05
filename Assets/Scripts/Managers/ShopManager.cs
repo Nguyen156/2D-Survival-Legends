@@ -73,8 +73,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             toDestroy.RemoveAt(0);
         }
 
-        int containersToAdd = 6 - shopItemParent.childCount;
-        int weaponContainerCount = Random.Range(Mathf.Min(2, containersToAdd), containersToAdd);
+        int containersToAdd = 4 - shopItemParent.childCount;
+        int weaponContainerCount = Random.Range(Mathf.Min(4, containersToAdd), containersToAdd);
         int objectContainerCount = containersToAdd - weaponContainerCount;
 
         for(int i = 0; i < weaponContainerCount; i++)
@@ -84,6 +84,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
 
             int randomLevel;
             if (waveNumber < 6)
+                randomLevel = 0;
+            else if (waveNumber > 6 && waveNumber < 12)
                 randomLevel = Random.Range(0, 2);
             else
                 randomLevel = Random.Range(0, 4);
@@ -139,8 +141,6 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             TryPurchaseWeapon(container, weaponLevel);
         else
             PurchaseObject(container);
-
-        AudioManager.instance.PlaySFX(10);
     }
 
     private void TryPurchaseWeapon(UI_ShopItemContainer container, int weaponLevel)
@@ -153,6 +153,8 @@ public class ShopManager : MonoBehaviour, IGameStateListener
             Destroy(container.gameObject);
 
             OnItemPurchase?.Invoke();
+
+            AudioManager.instance.PlaySFX(13);
         }
     }
 

@@ -4,10 +4,15 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using System;
+using Nguyen.SaveSystem;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IWantToBeSaved
 {
     public static GameManager instance;
+
+    private bool hasProgress = false;
+
+    private const string HAS_PROGRESS_KEY = "HasProgressKey";
 
     [Header(" Actions ")]
     public static Action OnGamePaused;
@@ -28,6 +33,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartMenu() => SetGameState(GameState.MENU);
+    public void Quit() => Application.Quit();
     public void StartGame()
     {
         AudioManager.instance.PlaySFX(9);
@@ -92,5 +98,24 @@ public class GameManager : MonoBehaviour
         {
             SetGameState(GameState.SHOP);
         }
+    }
+
+    public bool HasProgress() => hasProgress;
+
+    public void SetProgress()
+    {
+        hasProgress = true;
+        Save();
+    }
+
+    public void Load()
+    {
+        if(SaveSystem.TryLoad(this, HAS_PROGRESS_KEY, out object hasProgressObject))
+            hasProgress = (bool) hasProgressObject;
+    }
+
+    public void Save()
+    {
+        SaveSystem.Save(this, HAS_PROGRESS_KEY, hasProgress);
     }
 }

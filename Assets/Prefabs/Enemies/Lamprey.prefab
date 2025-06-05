@@ -154,7 +154,7 @@ MonoBehaviour:
   maxHealth: 8
   healthPerWave: 2
   waveToSpawn: 4
-  attackRange: 8
+  attackRange: 6
   gizmos: 1
 --- !u!114 &965498114964777005
 MonoBehaviour:

@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject restartConfirmationPanel;
     [SerializeField] private GameObject characterSelectionPanel;
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private GameObject guidePanel;
 
     private List<GameObject> panels = new List<GameObject>();
 
@@ -63,6 +64,7 @@ public class UIManager : MonoBehaviour, IGameStateListener
 
             case GameState.GAME:
                 ShowPanel(gamePanel);
+                ShowGuideIfNeeded();
                 break;
 
             case GameState.GAMEOVER:
@@ -126,5 +128,25 @@ public class UIManager : MonoBehaviour, IGameStateListener
     {
         //AudioManager.instance.PlaySFX(9);
         settingsPanel.SetActive(false);
+    }
+
+    public void ShowGuideIfNeeded()
+    {
+        if (GameManager.instance.HasProgress())
+            return;
+
+        guidePanel.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    public void HideGuide()
+    {
+        guidePanel.SetActive(false);
+
+        GameManager.instance.SetProgress();
+
+        Time.timeScale = 1;
+
+        AudioManager.instance.PlaySFX(9);
     }
 }

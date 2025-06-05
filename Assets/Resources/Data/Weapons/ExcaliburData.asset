@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d28053779d5fba14fa96814a2f812976, type: 3}
+  m_Name: ExcaliburData
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Excalibur
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 0767139746c00fc40ba46369e7be09e1, type: 3}
+  <Price>k__BackingField: 25
+  <Prefab>k__BackingField: {fileID: 8965731886222835745, guid: e9bab8b630e9926449bee8559ff742a6, type: 3}
+  damage: 10
+  attackSpeed: 5
+  criticalChance: 10
+  criticalPercent: 2
+  range: 3

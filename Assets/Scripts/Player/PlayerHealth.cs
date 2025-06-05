@@ -45,7 +45,7 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
         if (health >= maxHealth)
             return;
 
-        float lifeStealValue = damage * lifeSteal;
+        float lifeStealValue = (damage * lifeSteal) / 2;
         float healRecovery = Mathf.Min(lifeStealValue, maxHealth - health);
         
         health += healRecovery;
